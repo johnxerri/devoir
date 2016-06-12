@@ -23,6 +23,9 @@ LAVAL
 NON
 
 */
+// ==========================================================
+// EXO 1 :
+
 $info1 = ''; // J instencie une variable vide pour afficher le resultat final de l exo 1
 
 if($_POST && isset($_POST['message'])){ // Si on post qqchose et que $_POST['message'] est déclaré
@@ -64,30 +67,93 @@ if($_POST && isset($_POST['message'])){ // Si on post qqchose et que $_POST['mes
 
 }
 
+// ==========================================================
+// EXO 2 :
+
+// ==========================================================
+// EXO 3 :
+
+$info3 = ''; // J instencie une variable vide pour afficher le resultat final de l exo 3
+
+$handle = fopen("dico.txt", "r");
+
+function wd_remove_accents($str, $charset='utf-8')
+{
+    $str = htmlentities($str, ENT_NOQUOTES, $charset);
+    
+    $str = preg_replace('#&([A-za-z])(?:acute|cedil|caron|circ|grave|orn|ring|slash|th|tilde|uml);#', '\1', $str);
+    $str = preg_replace('#&([A-za-z]{2})(?:lig);#', '\1', $str); // pour les ligatures e.g. '&oelig;'
+    $str = preg_replace('#&[^;]+;#', '', $str); // supprime les autres caractères
+    $str = preg_replace('([^A-Za-z0-9])', '', $str);
+    
+    return $str;
+}
+
+while ($content = fgets($handle)) {	
+
+	$content2 = strtolower(wd_remove_accents($content));
+
+	/* on inverse le sens des lettres de la content */
+	$inverse = strtolower(strrev($content2));
+
+	$info3 .= ($content2 == $inverse) ? "<p> $content </p>" : "";
+
+}
+
+fclose($handle);
 
 ?>
-<section style="text-align:center;">
+<!DOCTYPE html>
+<html>
 
-	<h2>Exercice 1 :</h2>
+	<head>
 
-	<form method="post" action="">
-		
-		<p><textarea name="message" style="width:400px; height: 200px; resize:none;"></textarea></p>
+		<meta charset="utf-8" />
+		<title>Exercice PHP</title>
 
-		<p><input type="submit" value="Envoyer le message" /></p>
+	</head>
 
-	</form>
+	<body>
 
-	<article style="margin:0 auto; width:400px;">
-		<?= $info1; ?>
-	</article>
+		<section style="text-align:center;">
 
-</section>
+			<h2>Exercice 1 : ✔</h2>
 
-<hr />
+			<form method="post" action="">
+				
+				<p><textarea name="message" style="width:400px; height: 200px; resize:none;"></textarea></p>
 
-<section style="text-align:center;">
-	
-	<h2>Exercice 2 :</h2>
+				<p><input type="submit" value="Envoyer le message" /></p>
 
-</section>
+			</form>
+
+			<article style="margin:0 auto; width:400px;">
+				<?= $info1; ?>
+			</article>
+
+		</section>
+
+		<hr />
+
+		<section style="text-align:center;">
+			
+			<h2>Exercice 2 : ✘</h2>
+
+		</section>
+
+		<hr />
+
+		<section style="text-align:center;">
+			
+			<h2>Exercice 3 : ✔</h2>
+			<p>Voici les palindromes du dico.txt :</p>
+
+			<article style="margin:0 auto; width:400px;">
+				<?= $info3; ?>
+			</article>
+
+		</section>
+
+	</body>
+
+</html>
