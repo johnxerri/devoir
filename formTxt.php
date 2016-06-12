@@ -75,8 +75,10 @@ if($_POST && isset($_POST['message'])){ // Si on post qqchose et que $_POST['mes
 
 $info3 = ''; // J instencie une variable vide pour afficher le resultat final de l exo 3
 
+// J ouvre dico.txt en lecture seule et place son contenu dans $handle
 $handle = fopen("dico.txt", "r");
 
+// Fonction pour retirer les accents
 function wd_remove_accents($str, $charset='utf-8')
 {
     $str = htmlentities($str, ENT_NOQUOTES, $charset);
@@ -89,19 +91,25 @@ function wd_remove_accents($str, $charset='utf-8')
     return $str;
 }
 
+// On boucle sur chaque ligne
 while ($content = fgets($handle)) {	
 
+	// On met dans $content2 , $content en minuscule et sans accents
 	$content2 = strtolower(wd_remove_accents($content));
 
-	/* on inverse le sens des lettres de la content */
+	/* on inverse le sens des lettres de $content2 */
 	$inverse = strtolower(strrev($content2));
 
+	// Je rempli $info3 avec les resultats trouver (texte a l endroit == texte a l envers)
 	$info3 .= ($content2 == $inverse) ? "<p> $content </p>" : "";
 
 }
 
+// je ferme $handle
 fclose($handle);
 
+// ==========================================================
+// AFFICHAGE HTML :
 ?>
 <!DOCTYPE html>
 <html>
